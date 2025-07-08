@@ -3,7 +3,8 @@ import cv2
 from pathlib import Path
 
 from ark.client.comm_infrastructure.base_node import BaseNode, main
-from arktypes import unpack, rgbd_t
+from arktypes import rgbd_t
+from arktypes.utils import unpack
 
 CONFIG_PATH = "config/global.yaml"
 
@@ -26,7 +27,7 @@ class ImageLoggerNode(BaseNode):
         self.create_subscriber("IntelRealSense/rgbd/sim", rgbd_t, self.save_image)
         
     def save_image(self, t: float, channel_name: str, msg: rgbd_t) -> None:
-        image, depth = unpack.unpack_rgbd(msg)
+        image, depth = unpack.rgbd(msg)
         output_path = self.output_dir / f"{self.frame}.png"
         cv2.imwrite(str(output_path), image)
         self.frame += 1
