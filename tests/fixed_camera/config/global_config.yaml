@@ -1,0 +1,15 @@
+
+simulator: 
+  name: "intel_realsense_simulator"
+  backend_type: "pybullet"
+  node_frequency: 240
+  config: 
+    connection_mode: "GUI"
+    gravity:
+      - 0
+      - 0
+      - -9.81
+    sim_frequency: 240
+
+sensors:
+  - sensors/IntelRealSense.yaml

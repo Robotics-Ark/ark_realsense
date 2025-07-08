@@ -28,9 +28,9 @@ config:
       pitch: 0.0
       roll: 0.0
       up_axis_index: 2
-    attach:
-      parent_name: "SimpleTwoWheelCar"
-      parent_link: front_sensor_link
-      offset_translation: [0.0, 0.0, 0.05]     # default [0, 0, 0]
-      offset_rotation: [0.0, 0.0, 0.0]         # euler or quaternions, default [0, 0, 0]
-      rel_camera_target: [1, 0, 0]             # default [1, 0, 0]      
+    # attach:
+    #   parent_name: "SimpleTwoWheelCar"
+    #   parent_link: front_sensor_link
+    #   offset_translation: [0.0, 0.0, 0.05]     # default [0, 0, 0]
+    #   offset_rotation: [0.0, 0.0, 0.0]         # euler or quaternions, default [0, 0, 0]
+    #   rel_camera_target: [1, 0, 0]             # default [1, 0, 0]      

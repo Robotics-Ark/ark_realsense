@@ -5,6 +5,7 @@ from ark.system.driver.sensor_driver import CameraDriver
 
 import pyrealsense2 as rs
 import numpy as np
+import time
 
 class IntelRealSenseDriver(CameraDriver):
     def __init__(self, 
