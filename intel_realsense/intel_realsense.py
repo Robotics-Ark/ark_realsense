@@ -22,8 +22,8 @@ class Drivers(Enum):
 class IntelRealSense(Sensor):
 
     def __init__(self, name: str, 
-                       driver: Optional[SensorDriver] = None,
                        global_config: Dict[str, Any] = None,
+                       driver: Optional[SensorDriver] = None,
                        ) -> None:
         """
         Initialize the SystemComponent instance.
@@ -40,15 +40,15 @@ class IntelRealSense(Sensor):
         if self.sim == True:
             self.rgbd_channel = self.rgbd_channel + "/sim"
 
-        self.component_channels_init([
-            (self.rgbd_channel, rgbd_t),
-        ])
+        self.component_channels_init({
+            self.rgbd_channel: rgbd_t,
+        })
      
     def pack_data(self, images: Any) -> Dict[str, Any]:
         color_image = images['color']
         depth_image = images['depth']
 
-        msg = pack.rgbd(image=color_image, depth=depth_image, name=self.name)
+        msg = pack.rgbd(rgb_image=color_image, depth_map=depth_image, name=self.name)
         return {self.rgbd_channel: msg}
 
 
@@ -57,7 +57,7 @@ class IntelRealSense(Sensor):
         images = self._driver.get_images()
         return images
 
-CONFIG_PATH = "config/global.yaml"
+CONFIG_PATH = "config/global_config.yaml"
 if __name__ == "__main__":
     name = "IntelRealSense"
     driver = IntelRealSenseDriver(name, CONFIG_PATH)

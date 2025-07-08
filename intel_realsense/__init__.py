@@ -1,1 +1,0 @@
-"""Intel RealSense integration package."""
