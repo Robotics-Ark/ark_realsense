@@ -47,7 +47,6 @@ class IntelRealSense(Sensor):
     def pack_data(self, images: Any) -> Dict[str, Any]:
         color_image = images['color']
         depth_image = images['depth']
-
         msg = pack.rgbd(rgb_image=color_image, depth_map=depth_image, name=self.name)
         return {self.rgbd_channel: msg}
 
@@ -57,7 +56,7 @@ class IntelRealSense(Sensor):
         images = self._driver.get_images()
         return images
 
-CONFIG_PATH = "config/global_config.yaml"
+CONFIG_PATH = "IntelRealSense.yaml"
 if __name__ == "__main__":
     name = "IntelRealSense"
     driver = IntelRealSenseDriver(name, CONFIG_PATH)
