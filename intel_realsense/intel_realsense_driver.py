@@ -85,7 +85,7 @@ class IntelRealSenseDriver(CameraDriver):
             infrared_frame = frames.get_infrared_frame()
             infrared_image = np.asanyarray(infrared_frame.get_data())
             images["infrared"] = infrared_image
-
+            
         return images
 
     def shutdown_driver(self) -> None:

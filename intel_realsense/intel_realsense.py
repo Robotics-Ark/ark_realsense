@@ -69,7 +69,6 @@ class IntelRealSense(Sensor):
         images = self._driver.get_images()
         return images
 
-
 CONFIG_PATH = "config/global_config.yaml"
 if __name__ == "__main__":
     name = "IntelRealSense"
