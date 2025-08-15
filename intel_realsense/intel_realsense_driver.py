@@ -1,4 +1,3 @@
-
 from typing import Any, Dict, Optional
 
 from ark.system.driver.sensor_driver import CameraDriver
@@ -7,11 +6,9 @@ import pyrealsense2 as rs
 import numpy as np
 import time
 
+
 class IntelRealSenseDriver(CameraDriver):
-    def __init__(self, 
-                 sensor_name: str,
-                 sensor_config: Dict[str, Any] = None
-                 ) -> None:
+    def __init__(self, sensor_name: str, sensor_config: Dict[str, Any] = None) -> None:
         super().__init__(sensor_name, sensor_config, False)
         # Configure depth and color streams
         self.pipeline = rs.pipeline()
@@ -32,22 +29,22 @@ class IntelRealSenseDriver(CameraDriver):
         stream_map = {
             "depth": rs.stream.depth,
             "color": rs.stream.color,
-            "infrared": rs.stream.infrared
+            "infrared": rs.stream.infrared,
         }
-        
+
         format_map = {
             "z16": rs.format.z16,
             "bgr8": rs.format.bgr8,
             "rgb8": rs.format.rgb8,
             "y8": rs.format.y8,
-            "y16": rs.format.y16
+            "y16": rs.format.y16,
         }
 
         self.steams_enabled = []
         self.width = self.config.get("width", 640)
         self.height = self.config.get("height", 480)
         self.freq = self.config.get("frequency", 60)
-        
+
         for stream_name, stream_config in self.config["streams"].items():
             if stream_config["enable"]:
                 self.rs_config.enable_stream(
@@ -55,7 +52,7 @@ class IntelRealSenseDriver(CameraDriver):
                     self.width,
                     self.height,
                     format_map[stream_config["format"]],
-                    self.freq
+                    self.freq,
                 )
                 self.steams_enabled.append(stream_name)
 

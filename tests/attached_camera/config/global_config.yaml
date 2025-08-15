@@ -4,7 +4,7 @@ simulator:
   backend_type: "pybullet"
   node_frequency: 240
   config: 
-    connection_mode: "GUI"
+    connection_mode: "DIRECT"
     gravity:
       - 0
       - 0
