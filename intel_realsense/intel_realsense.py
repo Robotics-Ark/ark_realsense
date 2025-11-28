@@ -17,14 +17,19 @@ except ImportError:
     log.error("Intel RealSense Driver not found. Please install the required package.")
     IntelRealSenseDriver = None
 
+
 @dataclass
 class Drivers(Enum):
     PYBULLET_DRIVER = BulletCameraDriver
-    MUJOCO_DRIVER = MujocoCameraDriver  # Assuming Mujoco uses the same driver as Bullet for cameras
+    MUJOCO_DRIVER = (
+        MujocoCameraDriver  # Assuming Mujoco uses the same driver as Bullet for cameras
+    )
     try:
         DRIVER = IntelRealSenseDriver
     except ImportError:
-        log.error("Intel RealSense Driver not found. Please install the required package.")
+        log.error(
+            "Intel RealSense Driver not found. Please install the required package."
+        )
         DRIVER = None
 
 
@@ -47,9 +52,18 @@ class IntelRealSense(Sensor):
         """
         super().__init__(name, global_config, driver)
 
-        self.rgbd_channel = self.name + "/rgbd"
-        if self.sim == True:
-            self.rgbd_channel = self.rgbd_channel + "/sim"
+        self.rgbd_channel = None
+        observation_channels = global_config["observation_channels"]
+        if observation_channels is not None and len(observation_channels) > 0:
+            for key in observation_channels.keys():
+                if "rgbd" in key:
+                    self.rgbd_channel = key
+
+        if self.rgbd_channel is None:
+            namespace = global_config["namespace"]
+            self.rgbd_channel = f"{namespace}/" + self.name + "/rgbd"
+            if self.sim == True:
+                self.rgbd_channel = self.rgbd_channel + "/sim"
 
         self.component_channels_init(
             {
@@ -68,6 +82,7 @@ class IntelRealSense(Sensor):
         """Simulate the sensor's behavior."""
         images = self._driver.get_images()
         return images
+
 
 CONFIG_PATH = "config/global_config.yaml"
 if __name__ == "__main__":
