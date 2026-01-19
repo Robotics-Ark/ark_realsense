@@ -1,36 +1,24 @@
-from typing import Any, Dict, Optional
-from dataclasses import dataclass
+import importlib
 from enum import Enum
+from typing import Any, Dict, Optional
 
 from ark.client.comm_infrastructure.base_node import main
 from ark.system.component.sensor import Sensor
 from ark.system.driver.sensor_driver import SensorDriver
-from ark.system.pybullet.pybullet_camera_driver import BulletCameraDriver
-from ark.system.mujoco.mujoco_camera_driver import MujocoCameraDriver
-from ark.tools.log import log
 from arktypes import rgbd_t
-from arktypes.utils import unpack, pack
-
-try:
-    from intel_realsense_driver import IntelRealSenseDriver
-except ImportError:
-    log.error("Intel RealSense Driver not found. Please install the required package.")
-    IntelRealSenseDriver = None
+from arktypes.utils import pack
 
 
-@dataclass
 class Drivers(Enum):
-    PYBULLET_DRIVER = BulletCameraDriver
-    MUJOCO_DRIVER = (
-        MujocoCameraDriver  # Assuming Mujoco uses the same driver as Bullet for cameras
-    )
-    try:
-        DRIVER = IntelRealSenseDriver
-    except ImportError:
-        log.error(
-            "Intel RealSense Driver not found. Please install the required package."
-        )
-        DRIVER = None
+    PYBULLET_DRIVER = "ark.system.pybullet.pybullet_camera_driver.BulletCameraDriver"
+    MUJOCO_DRIVER = "ark.system.mujoco.mujoco_camera_driver.MujocoCameraDriver"
+    ISAAC_DRIVER = "ark.system.isaac.isaac_camera_driver.IsaacCameraDriver"
+    DRIVER = "intel_realsense_driver.IntelRealSenseDriver"
+
+    def load(self):
+        module_path, class_name = self.value.rsplit(".", 1)
+        module = importlib.import_module(module_path)
+        return getattr(module, class_name)
 
 
 class IntelRealSense(Sensor):
